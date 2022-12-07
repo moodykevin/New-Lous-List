@@ -1,0 +1,145 @@
+{% extends 'NewLousList/base.html' %}
+        {% block css%}
+            .button {
+                text-decoration: none;
+            }
+
+            /* Style for button attribute */
+            .button a {
+                float: left;
+                display: block;
+                text-align: center;
+                padding: 10px 12px;
+                color: #030303;
+                background-color: rgba(177, 177, 177, 0.768);
+                transition: 500ms;
+                border-radius: 10px;
+            }
+
+            .button a:link {
+                text-decoration: none;
+            }
+
+            /* Style button after clicked */
+            .button a:visited {
+                text-decoration: none;
+                color:#060606;
+            }
+
+            /* Change color and radius on hover with added transition */
+            .button a:hover {
+                float: left;
+                text-decoration: none;
+                background-color: rgba(192, 192, 192, 0.768);
+                transition: 400ms;
+                transition-delay: 100ms;
+                border-radius: 20px;
+            }
+
+            .button a:active {
+                text-decoration: none;
+                background-color: rgba(218, 131, 0, 0.768);
+            }
+        {% endblock %}
+
+
+    {% block refresh %}
+      <a class="navbar-brand" href = "{% url 'NewLousList:view_cart' %}">Shopping Cart</a>
+    {% endblock %}
+
+    {% block search %}
+    {% endblock %}
+
+    {% block specifics %}
+    {% endblock %}
+
+{% block content%}
+{% if class_added %}
+    
+{% endif %}
+{%if class_repeat != None%}
+{% if class_repeat %}
+    <span style="background-color: #FF0000"><center>Cannot add two sections of the same class</center></span>
+{%else%}
+{%if class_overlap%}
+<span style="background-color: #FF0000"><center>The class you added has a time conflict</center></span>
+{%else%}
+    <span style="background-color: #00FF00"><center>Class added to schedule</center></span>
+{%endif%}
+{% endif %}
+{% endif %}
+    <div class = "container mt-4">
+        <h2>Shopping Cart</h2>
+    </div>
+    
+
+    <table class="table">
+            <tbody>
+                {% for course in cart %}
+                <tr>
+                    <td>
+
+                        <div style="float:left;width:12%;">
+                            {{course.subject}} {{ course.catalog_number}}
+                        </div>
+
+                        <div style="float:left;width:4%;">
+                            {{ course.course_section}}
+                        </div>
+
+                        <div style="float:left;width:9%;">
+                            {{course.component}} ({{course.units}} units)
+                        </div>
+
+                        <div style="float:left;width:14%;">
+                            Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                        </div>
+
+                        <div style="float:left;width:11%;">
+                            {{ course.instructor_name}}
+                        </div>
+
+                        <div style="float:left;width:28%;">
+                            {% for time in course.meetings %}
+                            {% for key,val in time.items %}
+                            {% if key == 'start_time' %}
+                            <div style="float:left;width:25%;">
+                                {{ val }} -
+                            </div>
+                            {% else %}
+                            <div style="float:left;width:25%;">
+                                {{ val }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <div style="float:right;width:15%;">
+                            <div class="button">
+                                <form method="GET" action="{% url 'NewLousList:remove_cart' course.id %}">
+                                    <!-- <button type="submit">Add to Shopping Cart</button> -->
+                                    <input type="submit" name="remove_cart_button" value="Remove from Cart"/>
+                                </form>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table><br><br>
+
+        {% if cart %}
+        <div class="button">
+            <a href="{% url 'NewLousList:schedule' %}">Create Schedule</a>
+        </div>
+        {% else %}
+        <div class = "container">
+            You don't have any courses added, go to <a href="{% url 'NewLousList:index' %}"> home</a> and add some courses!
+        </div>
+        {% endif %}
+
+
+
+{% endblock %}

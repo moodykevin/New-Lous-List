@@ -1,0 +1,176 @@
+{% extends 'NewLousList/base.html' %}
+{%block css%}
+            .collapsible {
+              background-color: #777;
+              color: white;
+              cursor: pointer;
+              padding: 18px;
+              width: 99%;
+              border: none;
+              text-align: left;
+              font-size: 32;
+              outline: none;
+              border-radius: 10px;
+              border-style: solid;
+              border-color: #555;
+              height: 20%;
+            }
+
+            .collapsibleContent {
+              padding: 0 18px;
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.4s ease-out;
+              background-color: #f1f1f1;
+            }
+
+            .toggle:checked + .lbl-toggle + .collapsible-content {
+              max-height: 100vh;
+            }
+
+            .toggle:checked + .lbl-toggle {
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+
+
+            .buttonClass
+            {
+                color: black;
+                background-color: #86E4EB;
+
+                display:block;
+                width: 98%;
+                margin-bottom:10px;
+                border: 2px solid #86E4EB;
+            }
+            a:link
+            {
+                color: #4687DB;
+            }
+            a:visited
+            {
+                color: #015249;
+            }
+        {%endblock%}
+
+        {%block refresh%}
+    <a class="navbar-brand" href="{% url 'NewLousList:index' %}">New Lou's List</a>
+        {% endblock %}
+    {%block search%}
+    <div>
+            <form class="search-class" method="GET" action="" >
+                <input class="search-class" type="search" name="search">
+                <button class="search-class" type="submit"> Search for a Department</button>
+            </form>
+        </div>
+      {%endblock%}
+
+
+
+<!--     Nav bar source code: https://getbootstrap.com/docs/5.0/components/navbar/-->
+
+<!--        <div class="topnav">-->
+<!--            <p>New Lou's List</p>-->
+<!--        </div>-->
+{%block content%}
+        <p> </p>
+        <h2><center>Subject Departments</center></h2>
+        <p><center>Click on a School to see their departments!</center></p>
+        <br>
+        {% if filtered %}
+          {% for sub in filtered %}
+          {% if sub.name != '' %}
+                  <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                      <button class="buttonClass">{{ sub.subject }} - {{sub.name}}</button>
+                  </a>
+          {% else %}
+                  <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                      <button class="buttonClass">{{ sub.subject }}</button>
+                  </a>
+          {% endif %}
+          {% endfor %}
+        {% else %}
+          {% if subjects %}
+            <ul>
+              <button class="mb-1 collapsible"><font size="5">College of Arts & Sciences</font></button>
+              <div class="collapsibleContent">
+                {% for sub in college_list %}
+                  {% if sub.name != '' %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }} - {{sub.name}}</button>
+                          </a>
+                  {% else %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }}</button>
+                          </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <button class="mb-1 collapsible"><font size="5">School of Engineering & Applied Sciences</font></button>
+              <div class="collapsibleContent">
+                {% for sub in engr_list %}
+                  {% if sub.name != '' %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }} - {{sub.name}}</button>
+                          </a>
+                  {% else %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }}</button>
+                          </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <button class="mb-1 collapsible"><font size="5">School of Education and Human Development</font></button>
+              <div class="collapsibleContent">
+                {% for sub in edu_list %}
+                  {% if sub.name != '' %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }} - {{sub.name}}</button>
+                          </a>
+                  {% else %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }}</button>
+                          </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <button class="mb-1 collapsible"><font size="5">Other Schools and Departments</font></button>
+              <div class="collapsibleContent">
+                {% for sub in other_list %}
+                  {% if sub.name != '' %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }} - {{sub.name}}</button>
+                          </a>
+                  {% else %}
+                          <a href="{% url 'NewLousList:courses_by_subject' sub.subject %}">
+                              <button class="buttonClass">{{ sub.subject }}</button>
+                          </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              </ul>
+          {% else %}
+              <p>No Subjects to display.</p>
+          {% endif %}
+        {% endif %}
+
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+      
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight){
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          } 
+        });
+      }
+      </script>
+        {%endblock%}
+
+

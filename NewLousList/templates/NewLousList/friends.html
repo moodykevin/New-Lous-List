@@ -1,0 +1,42 @@
+{% extends 'NewLousList/base.html' %}
+<!--https://webdeasy.de/en/top-css-buttons-en/-->
+<!--https://www.angularjswiki.com/fontawesome/-->
+<!--Code for the buttons with unique icons and site used to find code for buttons-->
+      {% block refresh %}
+    <a class="navbar-brand" href="{% url 'NewLousList:friends' %}">Friends</a>
+      {% endblock %}
+
+    {% block search %}
+    {% endblock %}
+    {% block content %}
+<!--        <div class="topnav">-->
+<!--            <p>New Lou's List</p>-->
+<!--        </div>-->
+<div class="container d-flex align-items-center justify-content-center">
+            <div>
+                <p> </p>
+                    <h3>Friends</h3>
+                </div>
+    </div>
+    {%if friend_list%}
+    <div class="container">
+        {% for user in friend_list%}
+        <div class = "container mt-2 d-flex align-items-center justify-content-center">
+                <h5><a href = '/NewLousList/profile/{{user}}' class = 'btn'><u>{{user}}</u></a></h5>
+                <form action="/NewLousList/friends/" method="POST" > {% csrf_token %}
+                <input class="btn btn-danger" type="submit" value="Remove Friend">
+                <input type="hidden" name="friend_remove" value="{{user}}"/>
+                </form>
+          </div>
+        </div>
+    </form>
+        {%endfor%}
+    </div>
+    {%else%}
+    <div class = "container d-flex align-items-center justify-content-center">
+      You do not have any friends yet.
+    </div>
+        
+    {%endif%}
+
+    {% endblock %}

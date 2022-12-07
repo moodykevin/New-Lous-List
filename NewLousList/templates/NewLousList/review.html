@@ -1,0 +1,44 @@
+{% extends 'NewLousList/base.html' %}
+            {% block css%}
+            .buttonClass
+            {
+                color: black;
+                background-color: #86E4EB;
+
+                display:block;
+                width: 98%;
+                margin-bottom:10px;
+                border: 2px solid #86E4EB;
+            }
+            a:link
+            {
+                color: #4687DB;
+            }
+            a:visited
+            {
+                color: #015249;
+            }
+
+        {%endblock%}
+
+
+        {%block refresh%}
+    <a class="navbar-brand" href="{% url 'NewLousList:review' %}">Leave a Review</a>
+    {%endblock%}
+
+{%block content%}
+<h2>Leave a Review</h2>
+<h4>
+
+    <form action="{% url 'NewLousList:review_confirm' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type='submit' >
+</form>
+</h4>
+
+
+    {% endblock %}
+
+
+

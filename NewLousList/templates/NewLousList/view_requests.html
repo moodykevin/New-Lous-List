@@ -1,0 +1,76 @@
+{% extends 'NewLousList/base.html' %}
+        {% block css%}
+            .buttonClass
+            {
+                color: black;
+                background-color: #CDDACD;
+
+                display:block;
+                width: 1250px;
+                margin-bottom:10px;
+                border: 2px solid green;
+            }
+        .button1 {background-color: #008CBA;} /* Blue */
+{%endblock %}
+
+{% block refresh %}
+    <a class="navbar-brand" href="{% url 'NewLousList:requests' %}">Friend Requests</a>
+      {% endblock %}
+
+    {%block content%}
+<!--        <div class="topnav">-->
+<!--            <p>New Lou's List</p>-->
+<!--        </div>-->
+    <div class = "container mt-3">
+    <h4>
+        Friend Requests
+    </h4>
+    {%if friend_requests%}
+    <div class="container mb-5">
+        {% for req in friend_requests%}
+        <div class = "row" >
+            <div class = "col-1">
+                <p>{{req.sender.username}}</p>
+            </div>
+            <div class = "col-1">
+                <form action="/NewLousList/friendrequests/" method="POST" > {% csrf_token %}
+                <input class="btn btn-success" type="submit" value="Accept">
+                <input type="hidden" name="friend_accept" value="{{req}}"/>
+            </div>
+            <div class = "col-1">
+                <form action="/NewLousList/friendrequests/" method="POST" > {% csrf_token %}
+                <input class="btn btn-danger" type="submit" value="Decline">
+                <input type="hidden" name="friend_decline" value="{{req}}"/>
+            </div>
+        </div>
+    </form>
+        {%endfor%}
+    </div>
+    {%else%}
+        You have no requests.
+    {%endif%}
+    <h4>
+        Your Pending Requests
+    </h4>
+    {%if pending%}
+    <div class="container">
+        {% for req in pending%}
+        <div class = "row" >
+            <div class = "col-3">
+                <p>{{req.receiver.username}}</p>
+            </div>
+            <div class = "col-3">
+                <form action="/NewLousList/friendrequests/" method="POST" > {% csrf_token %}
+                <input class = "btn-danger" type="submit" name="submit" value="Cancel Request"/>
+                <input type="hidden" name="friend_cancel" value="{{req.receiver}}"/>
+            </div>
+            <div class="col-6"></div>
+        </div>
+    </form>
+        {%endfor%}
+    </div>
+    {%else%}
+        You have no pending requests.
+    {%endif%}
+    </div>
+    {% endblock %}

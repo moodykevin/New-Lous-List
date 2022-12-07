@@ -1,0 +1,471 @@
+{% extends 'NewLousList/base.html' %}
+        {% block css %}
+            .button {
+                text-decoration: none;
+            }
+
+            /* Style for button attribute */
+            .button a {
+                float: left;
+                display: block;
+                text-align: center;
+                padding: 10px 12px;
+                color: #030303;
+                background-color: rgba(177, 177, 177, 0.768);
+                transition: 500ms;
+                border-radius: 10px;
+            }
+
+            .button a:link {
+                text-decoration: none;
+            }
+
+            /* Style button after clicked */
+            .button a:visited {
+                text-decoration: none;
+                color:#060606;
+            }
+
+            /* Change color and radius on hover with added transition */
+            .button a:hover {
+                float: left;
+                text-decoration: none;
+                background-color: rgba(192, 192, 192, 0.768);
+                transition: 400ms;
+                transition-delay: 100ms;
+                border-radius: 20px;
+            }
+
+            .button a:active {
+                text-decoration: none;
+                background-color: rgba(218, 131, 0, 0.768);
+            }
+        {% endblock %}
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    {% block refresh%}
+     <a class="navbar-brand" href = "{% url 'NewLousList:schedule' %}">Schedule</a>
+    {% endblock %}
+
+      {% block search%}
+      {% endblock %}
+
+      {% block specifics %}
+      {% endblock %}
+
+{% block content %}
+{% if not_friended %}
+    <span style="background-color: #ff2f00"><center>Cannot view the schedule of an unfriended user. Redirected to your schedule.</center></span>
+{% endif %}
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Monday</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in Mo_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor.name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Tuesday</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in Tu_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor_name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Wednesday</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in We_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor.name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Thursday</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in Th_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor.name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Friday</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in Fr_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor.name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+
+    <tr>
+        <div class="container mt-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Other</th>
+                </tr>
+                <ts></ts>
+                </thead>
+                <tbody>
+                    {% for course in other_set %}
+                    <tr>
+                        <td>
+                            <div style="float:left;width:15%;">
+                                {{course.description}}
+                            </div>
+
+                            <div style="float:left;width:12%;">
+                                {{course.subject}} {{ course.catalog_number}}
+                            </div>
+
+                            <div style="float:left;width:4%;">
+                                {{ course.course_section}}
+                            </div>
+
+                            <div style="float:left;width:9%;">
+                                {{course.component}} ({{course.units}} units)
+                            </div>
+
+                            <div style="float:left;width:14%;">
+                                Open seats: {{ course.enrollment_available}}/{{course.enrollment_total}}
+                            </div>
+
+                            <div style="float:left;width:11%;">
+                                {{ course.instructor.name}}
+                            </div>
+
+                            <div style="float:left;width:28%;">
+                                {% for time in course.meetings %}
+                                {% for key,val in time.items %}
+                                {% if key == 'start_time' %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }} -
+                                </div>
+                                {% else %}
+                                <div style="float:left;width:25%;">
+                                    {{ val }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </tr>
+    <div class = "container">
+        <div class = "row">
+            {%if owner != user%}
+                <form action="/NewLousList/schedule/{{owner}}/" method="POST">
+                    {% csrf_token %}
+                    <div class = "col-11 mb-3">
+                        <input type="text" class="form-control" id="message" name="message"/>
+                    </div>
+                    <div class = "col-1">
+                        <input class = "btn btn-primary"type="submit" name="submit" value="Post Your Comment"/>
+                    </div>
+                </form>
+              {%else%}
+                <form action="/NewLousList/schedule/" method="POST">
+                    {% csrf_token %}
+                    <div class = "col-11 mb-3">
+                        <input type="text" class="form-control" id="message" name="message"/>
+                    </div>
+                    <div class = "col-1">
+                        <input class = "btn btn-primary"type="submit" name="submit" value="Post Your Comment"/>
+                    </div>
+                </form>
+              {%endif %}
+        </div>
+    </div>
+    <div class="mt-5 container">
+        {%for comment in comments%}
+        <span class="dropdown">
+            <a style="color: black" class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <b>@{{comment.sender}}</b>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a href = '/NewLousList/profile/{{comment.sender}}' class = 'btn btn-3 btn-sep icon-me'> View Profile</a>
+              {%if owner != user%}
+                {%if comment.sender == user%}
+                    <form align="center" action="{% url 'NewLousList:schedule' owner %}" method="POST" > {% csrf_token %}
+                        <button class = "btn btn-danger" type = "submit" name = "comment_delete"value = "{{comment.id}}">Delete Comment</button>
+                    </form>
+                {%endif%}
+              {%else%}
+              <form align="center" action="{% url 'NewLousList:schedule'%}" method="POST" > {% csrf_token %}
+                <button class = "btn btn-danger" type = "submit" name = "comment_delete"value = "{{comment.id}}">Delete Comment</button>
+                </form>
+              {%endif %}
+            </ul>
+        </span>
+        <div class = "row" >
+            <p class="text-break">{{comment.message}}</p>
+        </div>
+        {%endfor%}
+    </div>
+{% endblock %}

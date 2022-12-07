@@ -1,0 +1,134 @@
+{% load static %}
+{% load socialaccount %}
+{% load bootstrap5 %}
+{% bootstrap_messages %}
+
+<link rel="stylesheet" href="{% static 'mysite/google_oauth.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    /* Style the top navigation bar */
+    /* Previous background color: #333 */
+    .topnav {
+      overflow: hidden;
+      background-color: rgba(205, 99, 0, 0.768);
+    }
+    
+    /* Style the topnav links */
+   .topnav a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    /* Change color on hover */
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    
+    /* Style the content */
+    .content {
+      background-color: #ddd;
+      padding: 20px 100px;
+      height: 85%; /* Should be removed. Only for demonstration */
+    }
+    
+    /* Style the footer */
+    .footer {
+      background-color: #f1f1f1;
+      padding: 10px;
+    }
+
+    /* Style the button */
+    .button {
+      text-decoration: none;
+    }
+
+    /* Style for button attribute */
+    .button a {
+      float: left;
+      display: block;
+      text-align: center;
+      padding: 14px 16px;
+      color: #030303;
+      background-color: rgba(177, 177, 177, 0.768);
+      transition: 500ms;
+      border-radius: 10px;
+    }
+
+    .button a:link {
+      text-decoration: none;
+    }
+
+    /* Style button after clicked */
+    .button a:visited {
+      text-decoration: none;
+      color:#060606;
+    }
+
+    /* Change color and radius on hover with added transition */
+    .button a:hover {
+      float: left;
+      text-decoration: none;
+      background-color: rgba(192, 192, 192, 0.768);
+      transition: 400ms;
+      transition-delay: 100ms;
+      border-radius: 20px;
+    }
+
+    .button a:active {
+      text-decoration: none;
+      background-color: rgba(218, 131, 0, 0.768);
+    }
+  </style>
+  <title>Google OAuth</title>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="{% url 'NewLousList:index' %}">New Lou's List</a>
+</div>
+
+<div class="content">
+  <h1>Google Sign-In</h1>
+  {% if user.is_authenticated %}
+  <form method="post" class="form">
+    {% csrf_token %}
+    <p>Welcome, You are logged in as {{ user.username }}</p><br>
+    <div class="button">
+      <a href="{% url 'NewLousList:index' %}">Continue to New Lou's List</a>
+    </div>
+  </form>
+  {% else %}
+    <form method="post" class="form">
+      {% csrf_token %}
+      <p>Please login to Google to access the new Lou's List.</p><br>
+      <div class="button">
+        <a href="{% provider_login_url 'google' %}">Login With Google</a>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+<div class="footer">
+  <p>Courtesy of CS 3240 Group A-26.</p>
+</div>
+
+</body>
+</html>

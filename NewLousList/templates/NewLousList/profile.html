@@ -1,0 +1,80 @@
+{% extends 'NewLousList/base.html' %}
+      {% block refresh%}
+    <a class="navbar-brand" href="{% url 'NewLousList:profile' %}">{{owner.username}}'s Profile</a>
+      {% endblock %}
+
+    {% block search %}
+    {% endblock %}
+
+    {% block specifics %}
+    {% endblock %}
+
+    {% block content %}
+<!--        <div class="topnav">-->
+<!--            <p>New Lou's List</p>-->
+<!--        </div>-->
+  <div class = "container mt-3">
+    <h3>
+      <b>{{owner.username}}</b>
+      <span class="dropdown">
+        
+        <a style="color: black" class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></a>
+        {%if owner == user%}
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a href = '/NewLousList/schedule/' class = "dropdown-item"> View Your Schedule</a>
+            <a href = '/NewLousList/friends/' class = "dropdown-item"> Your Friends</a>
+            <a href = '/NewLousList/friendrequests/' class = "dropdown-item"> Your Friend Requests</a>
+            <a href = '/NewLousList/edit_profile/' class = "dropdown-item"> Edit Profile</a>
+          </ul>
+        {%else%}
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a href = '/NewLousList/schedule/{{owner}}' class = "dropdown-item"> View Schedule</a>
+        </ul>
+        {%endif%}
+    </span>
+    <h5>
+      <div class = "container">
+      <div class = "row m-2 mt-4" >
+        <div class ="col-2">Name:</div>
+        <div class = "col-2">{{profile.first_name}} {{profile.last_name}}</div>
+      </div>
+      <div class = "row m-2" >
+        <div class = "col-2">Graduation Year: </div>
+        <div class = "col-2">{{profile.grad_year}}</div>
+      </div>
+      <div class = "row m-2">
+        <div class = "col-2">
+          Major:
+        </div>
+        <div class = "col-2">
+          {{profile.major}}
+        </div>
+      </div>
+    </div>
+    </h5>
+      
+    </div>
+    {%if owner != user%}
+    <div class = "container mt-5">
+        <h4>
+            Mutual Friends
+        </h4>
+        {%if friend_list%}
+        <div class="container">
+            {% for other in friend_list%}
+            <div class = "row" >
+                  <div class = "col-3">
+                      <a href = '/NewLousList/profile/{{other.username}}' class = 'btn'><u>{{other.username}}</u></a>
+                  </div>
+            </div>
+        </form>
+            {%endfor%}
+        </div>
+        {%else%}
+        <br>
+            You have no mutual friends.
+        {%endif%}
+      </div>
+    {%endif%}
+
+    {% endblock %}

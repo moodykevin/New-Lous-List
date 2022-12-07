@@ -1,0 +1,246 @@
+{% extends 'NewLousList/base.html' %}
+      {% block css %}
+            .button {
+                text-decoration: none;
+            }
+
+            /* Style for button attribute */
+            .button a {
+                float: left;
+                display: block;
+                text-align: center;
+                padding: 10px 12px;
+                color: #030303;
+                background-color: rgba(177, 177, 177, 0.768);
+                transition: 500ms;
+                border-radius: 10px;
+            }
+
+            .button a:link {
+                text-decoration: none;
+            }
+
+            /* Style button after clicked */
+            .button a:visited {
+                text-decoration: none;
+                color:#060606;
+            }
+
+            /* Change color and radius on hover with added transition */
+            .button a:hover {
+                float: left;
+                text-decoration: none;
+                background-color: rgba(192, 192, 192, 0.768);
+                transition: 400ms;
+                transition-delay: 100ms;
+                border-radius: 20px;
+            }
+
+            .button a:active {
+                text-decoration: none;
+                background-color: rgba(218, 131, 0, 0.768);
+            }
+
+            .InfoInstructor{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                background-color: #57BC90;
+                border: 2px solid #57BC90;
+            }
+
+            .InfoClass{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                background-color: #015249;
+                border: 2px solid #015249;
+                text-align: center;
+            }
+            h1{
+                color: white;
+            }
+            h3{
+                color: white;
+            }
+            .InfoMeeting{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                background-color: #77C9D4;
+                border: 2px solid #77C9D4;
+            }
+
+            .InfoOther{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                background-color: #86E4EB;
+                border: 2px solid #86E4EB;
+            }
+
+            .InfoReview{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                background-color: #D8FFBD;
+                border: 2px solid #D8FFBD;
+            }
+
+            table td {
+                display: table-cell;
+                vertical-align: inherit;
+
+            }
+
+            table {
+                border-collapse: separate;
+                text-indent: initial;
+                border-spacing: 2px;
+            }
+        {% endblock %}
+
+    {% block refresh %}
+      <a class="navbar-brand" onClick="history.go(-1);" style="cursor:pointer" >
+          {{ single_course.subject }} Courses
+      </a>
+    {% endblock %}
+
+  {% block search %}
+  {% endblock %}
+
+  {% block specifics %}
+  {% endblock %}
+
+  {% block content %}
+    <table border="1">
+        <tbody>
+            <tr>
+                <th colspan="2" valign = "top" class="InfoClass" >
+                    <h1> {{ single_course.description}}
+                    </h1>
+                    <h3> {{ single_course.subject }} {{single_course.catalog_number }} - {{single_course.course_section}}
+                    {% if single_course.component == 'LEC' %}
+                        (Lecture)
+                    {% endif %}
+
+                    {% if single_course.component == 'LAB' %}
+                        (Lab)
+                    {% endif %}
+
+                    {% if single_course.component == 'IND' %}
+                        (Independent Study)
+                    {% endif %}
+
+                    {% if single_course.component == 'PRA' %}
+                        (Practicum)
+                    {% endif %}
+
+                    {% if single_course.component == 'STO' %}
+                        (Studio)
+                    {% endif %}
+
+                    {% if single_course.component == 'DIS' %}
+                        (Discussion)
+                    {% endif %}
+
+                    {% if single_course.component == 'WKS' %}
+                        (Workshop)
+                    {% endif %}
+
+                    {% if single_course.component == 'SEM' %}
+                        (Seminar)
+                    {% endif %}
+
+                    {% if single_course.component == 'DRL' %}
+                        (Drill)
+                    {% endif %}
+
+                    {% if single_course.component == 'SPS' %}
+                        (Special Session)
+                    {% endif %}
+
+                    </h3>
+
+                </th>
+            </tr>
+            <tr>
+                <td width ="120" valign = "top" class="InfoInstructor">
+                    Instructor
+                </td>
+                <td width = "500" class = "InfoInstructor">
+                    <b>Name:</b> {{ single_course.instructor.name }}
+                    <br>
+                    <b>Email:</b> {{ single_course.instructor.email }}
+                </td>
+            </tr>
+            <tr>
+                <td width ="120" valign = "top" class="InfoMeeting">
+                    Meetings
+                </td>
+                <td width = "500" class = "InfoMeeting">
+                    {% for time in single_course.meetings %}
+                    {% for key,val in time.items %}
+                    {% if key == 'start_time' %}
+                        {{ val }} -
+                    {% else %}
+                        {% if val == 'MoTuWeThFr'%}
+                            Mo-Fr
+                            {% else %}
+                            {{ val }}
+                        {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+
+                </td>
+            </tr>
+            <tr>
+                <td width ="120" valign = "top" class="InfoOther">
+                    Other Course Info
+                </td>
+                <td width = "500" class = "InfoOther">
+                    <b>Enrollment:</b> {{ single_course.enrollment_available}} Open Seats (Capacity: {{single_course.class_capacity}})
+                    <br>
+                    <b>Status:</b>
+                    {% if single_course.enrollment_available != 0 %}
+                        {% if single_course.wait_cap != 0 %}
+                            Open, Waitlist Available if full {{single_course.wait_list}} / {{single_course.wait_cap}}
+                        {% else %}
+                            Open, No Waitlist Available
+                        {% endif %}
+                    {% else %}
+                        {% if single_course.wait_cap != 0%}
+                                Closed, Waitlist Available if full {{single_course.wait_list}} / {{single_course.wait_cap}}
+                            {% else %}
+                                Closed, No Waitlist Available
+                            {% endif %}
+                    {% endif %}
+                    <br>
+                    <b>Units:</b> {{single_course.units}}
+                    <br>
+                    <b>Course Number:</b> {{single_course.course_number}}
+                    <br>
+                    <b>Semester Code: </b> {{single_course.semester_code}}
+                    <br>
+                    <b>Average GPA: </b>
+                    {% if gpa != 0 %}
+                        {{gpa}}
+                    {% else %}
+                        No Average GPA for this course.
+                    {% endif %}
+                </td>
+            </tr>
+        <tr>
+                <td width ="120" valign = "top" class="InfoReview">
+                    Reviews
+                </td>
+                <td width = "500" class = "InfoReview">
+                    {% if all_reviews.length != 0 %}
+                        {% for r in all_reviews %}
+                            {{r.review_text}}
+                            <br></br>
+                        {% endfor %}
+                    {% else %}
+                        No reviews yet. Be the first!
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   {% endblock %}

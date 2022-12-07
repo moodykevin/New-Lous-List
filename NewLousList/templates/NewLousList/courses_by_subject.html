@@ -1,0 +1,248 @@
+{% extends 'NewLousList/base.html' %}
+        {% block css %}
+            .button {
+                text-decoration: none;
+            }
+
+            /* Style for button attribute */
+            .button a {
+                float: left;
+                display: block;
+                text-align: center;
+                padding: 10px 12px;
+                color: #030303;
+                background-color: rgba(177, 177, 177, 0.768);
+                transition: 500ms;
+                border-radius: 10px;
+            }
+
+            .button a:link {
+                text-decoration: none;
+            }
+
+            /* Style button after clicked */
+            .button a:visited {
+                text-decoration: none;
+                color:#060606;
+            }
+
+            /* Change color and radius on hover with added transition */
+            .button a:hover {
+                float: left;
+                text-decoration: none;
+                background-color: rgba(192, 192, 192, 0.768);
+                transition: 400ms;
+                transition-delay: 100ms;
+                border-radius: 20px;
+            }
+
+            .button a:active {
+                text-decoration: none;
+                background-color: rgba(218, 131, 0, 0.768);
+            }
+
+            .wrap-collabsible {
+              margin-bottom: 1.2rem 0;
+            }
+
+            input[type='checkbox'] {
+              display: none;
+            }
+
+            .lbl-toggle {
+              display: block;
+
+              font-weight: bold;
+              font-family: monospace;
+              font-size: 1.2rem;
+              text-transform: uppercase;
+              text-align: center;
+
+              padding: 1rem;
+
+              color: #FFFFFF;
+              background: rgba(5, 9, 9, 0.64);
+
+              cursor: pointer;
+
+              border-radius: 7px;
+              transition: all 0.25s ease-out;
+            }
+
+            .lbl-toggle:hover {
+              color: #FFFFFF;
+            }
+
+            .lbl-toggle::before {
+              content: ' ';
+              display: inline-block;
+
+              border-top: 5px solid transparent;
+              border-bottom: 5px solid transparent;
+              border-left: 5px solid currentColor;
+              vertical-align: middle;
+              margin-right: .7rem;
+              transform: translateY(-2px);
+
+              transition: transform .2s ease-out;
+            }
+
+            .toggle:checked + .lbl-toggle::before {
+              transform: rotate(90deg) translateX(-3px);
+            }
+
+            .collapsible-content {
+              max-height: 0px;
+              overflow: hidden;
+              transition: max-height .25s ease-in-out;
+            }
+
+            .toggle:checked + .lbl-toggle + .collapsible-content {
+              max-height: 100vh;
+            }
+
+            .toggle:checked + .lbl-toggle {
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+
+            .collapsible-content .content-inner {
+              background: rgba(142, 167, 167, 0.27);
+              border-bottom: 1px solid rgba(142, 167, 167, 0.27);
+              border-bottom-left-radius: 7px;
+              border-bottom-right-radius: 7px;
+              padding: .5rem 1rem;
+            }
+
+        {% endblock %}
+
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+
+  {% block refresh %}
+    <a class="navbar-brand" href="{% url 'NewLousList:courses_by_subject' subject.subject %}">
+
+        {% if subject.name != '' %}
+            {{subject}} Courses
+        {% else %}
+            {{subject.subject}} Courses
+        {% endif %}
+    </a>
+  {% endblock %}
+
+        {% block search%}
+        {% endblock %}
+
+
+    {% block specifics %}
+
+
+
+<div class="wrap-collabsible">
+  <input id="collapsible" class="toggle" type="checkbox">
+  <label for="collapsible" class="lbl-toggle">Search Courses</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+  <form style="padding-top: 20px; padding-left: 10px; padding-bottom: 20px" action="{% url 'NewLousList:search' subject.subject %}" method="GET" >
+
+    Title <input type="text" name="title" value="{{request.GET.title}}" placeholder=" 'Software Testing' "/>
+    Instructor <input type="text" name="instructor" value="{{request.GET.instructor}}" placeholder="Ex: 'Paul McBurney'"/>
+    Catalog Number <input type="text" name="catalog_number" value="{{request.GET.catalog_number}}" placeholder="Ex: '1010'"/>
+    Units <input type="text" name="units" value="{{request.GET.units}}" placeholder="Ex: '3'"/>
+    Component <input type="text" name="component" value="{{request.GET.component}}" placeholder="'Ex: 'LEC'"/>
+    <input type="submit" name="submit" value="Search"/>
+
+</form>
+</div>
+  </div>
+</div>
+
+    {% endblock %}
+
+
+
+
+  {% block content %}
+                {% for key,value in course_titles.items %}
+                    <tr>
+                            <div class="container mt-5">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ key }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for class in value %}
+                                        {% for id_key, class_value in class.items %}
+
+
+                                        <tr>
+                                            <td>
+                                                <div style="float:left;width:12%;">
+                                                    <a aria-current="page" href = "{% url 'NewLousList:single_course' subject_id class_value.course_number%}">{{ class_value.subject }} {{ class_value.catalog_number}}: {{ class_value.course_number }}</a>
+                                                </div>
+
+                                                <div style="float:left;width:4%;">
+                                                    {{ class_value.course_section}}
+                                                </div>
+
+                                                <div style="float:left;width:9%;">
+                                                    {{class_value.component}} ({{class_value.units}} units)
+                                                </div>
+
+                                                <div style="float:left;width:14%;">
+                                                    Open seats: {{ class_value.enrollment_available}}/{{class_value.class_capacity}}
+                                                </div>
+
+                                                <div style="float:left;width:11%;">
+                                                    {{ class_value.instructor.name}}
+                                                </div>
+                                              <font size="2.5">
+                                                <div style="float:left;width:28%;">
+                                                    {% for time in class_value.meetings %}
+                                                    {% for key,val in time.items %}
+                                                    {% if key == 'start_time' %}
+                                                    <div style="float:left;width:25%;">
+                                                        {{ val }} -
+                                                    </div>
+                                                    {% else %}
+                                                    <div style="float:left;width:25%;">
+                                                        {{ val }}
+                                                    </div>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                </div>
+                                            </font>
+
+                                                <div style="float:right;width:15%;">
+                                                    <div class="button">
+                                                        <form method="GET" action="{% url 'NewLousList:cart' id_key %}">
+                                                            <!-- <button type="submit">Add to Shopping Cart</button> -->
+                                                            <input type="submit" name="add_cart_button" value="Add to Shopping Cart"></input>
+                                                        </form>
+                                                    </div>
+                                                    <!-- <button type="submit">Add to Shopping Cart</button> -->
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                    </tr>
+                    {% endfor %}
+    <script>
+        var myVar;
+
+        function myFunction() {
+            myVar;
+        }
+
+    </script>
+
+   {% endblock %}

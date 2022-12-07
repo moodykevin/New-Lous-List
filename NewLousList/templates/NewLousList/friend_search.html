@@ -1,0 +1,73 @@
+{% extends 'NewLousList/base.html' %}
+        {% block css %}
+            .buttonClass
+            {
+                color: black;
+                background-color: #DDDDFF;
+
+                display:block;
+                width: 1250px;
+                margin-bottom:10px;
+                border: 2px solid #DDDDFF;
+            }
+
+
+        .button1 {background-color: #E32259;} /* Blue */
+        {% endblock %}
+
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+  {% block refresh %}
+    <a class="navbar-brand" href="{% url 'NewLousList:friend_search' %}">Friend Search</a>
+  {% endblock %}
+
+      {% block search%}
+      {% endblock %}
+
+      {% block specifics%}
+      {% endblock%}
+
+
+    {% block content %}
+<!--        <div class="topnav">-->
+<!--            <p>New Lou's List</p>-->
+<!--        </div>-->
+    <div class = "container mt-3">
+        <h3>
+            Add Friends
+        </h3>
+        <form action="/NewLousList/friendsearch/" method="POST" > {% csrf_token %}
+            Enter a user: <input type="text" name="username" value="{{request.GET.username}}" placeholder="username"/>
+            <input class = "btn-primary" type="submit" name="submit" value="Submit"/>
+            </form>
+    </div>
+    
+    </p>
+    {%if request_type == "POST"%}
+        {%if results%}
+        <div class="container">
+            {% for user in results%}
+            <div class = "row" >
+                <div class = "col-2">
+                    <h5><a href = '/NewLousList/profile/{{user.username}}' class = 'btn'><u>{{user.username}}</u></a></h5>
+                </div>
+                <div class = "col-2">
+                    <form action="/NewLousList/friendsearch/" method="POST" > {% csrf_token %}
+                    <input class = "btn-primary" type="submit" name="submit" value="Send Friend Request"/>
+                    <input type="hidden" name="recipient" value="{{user}}"/>
+                </div>
+            </div>
+        </form>
+            {%endfor%}
+        </div>
+        {%else%}
+        <div class = "container">
+            {%if not no_search%}
+                No matching users.
+            {% endif %}
+        </div>   
+        {%endif%}
+    {%endif%}
+    
+
+    {% endblock %}
