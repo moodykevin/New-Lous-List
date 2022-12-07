@@ -26,7 +26,7 @@ DEBUG = "DYNO" not in os.environ
 
 SECURE_HSTS_SECONDS = 5
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','newlouslist-a-26.herokuapp.com', 'newlouslist-edward.herokuapp.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','new-lous-list-moody.herokuapp.com', 'newlouslist-edward.herokuapp.com']
 
 # Application definition
 
